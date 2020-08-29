@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Optional.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MaybeEitherInteropTests
     {
-        [TestMethod]
+        [Test]
         public void MaybeEither_Conversion()
         {
             var noneMaybe = Option.None<string>();
@@ -25,7 +25,7 @@ namespace Optional.Tests
             Assert.AreEqual(someMaybe, someEither.WithoutException());
         }
 
-        [TestMethod]
+        [Test]
         public void MaybeEither_ConversionLazy()
         {
             var noneMaybe = Option.None<string>();
@@ -35,7 +35,7 @@ namespace Optional.Tests
             Assert.AreEqual(someMaybe.WithException(() => { Assert.Fail(); return "ex"; }).ValueOrException(), "val");
         }
 
-        [TestMethod]
+        [Test]
         public void MaybeEither_Transformation()
         {
             var noneMaybe = Option.None<string>();
@@ -57,7 +57,7 @@ namespace Optional.Tests
             Assert.AreEqual(someEither.FlatMap(val => Option.Some<string>("val1"), "ex").ValueOr("ex"), "val1");
         }
 
-        [TestMethod]
+        [Test]
         public void MaybeEither_TransformationLazy()
         {
             var noneMaybe = Option.None<string>();

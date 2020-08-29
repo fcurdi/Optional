@@ -1,20 +1,20 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Optional.Unsafe;
 
 namespace Optional.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class UnsafeTests
     {
-        [TestMethod]
+        [Test]
         public void Maybe_ToNullable()
         {
             Assert.AreEqual(default(int?), Option.None<int>().ToNullable());
             Assert.AreEqual(1, Option.Some(1).ToNullable());
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_GetValueOrDefault()
         {
             Assert.AreEqual(default(int), Option.None<int>().ValueOrDefault());
@@ -27,7 +27,7 @@ namespace Optional.Tests
             Assert.AreEqual("a", Option.Some("a").ValueOrDefault());
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_GetUnsafeValue()
         {
             var none = "a".None();
@@ -66,14 +66,14 @@ namespace Optional.Tests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Either_ToNullable()
         {
             Assert.AreEqual(default(int?), Option.None<int, bool>(false).ToNullable());
             Assert.AreEqual(1, Option.Some<int, bool>(1).ToNullable());
         }
 
-        [TestMethod]
+        [Test]
         public void Either_GetValueOrDefault()
         {
             Assert.AreEqual(default(int), Option.None<int, bool>(false).ValueOrDefault());
@@ -86,7 +86,7 @@ namespace Optional.Tests
             Assert.AreEqual("a", Option.Some<string, bool>("a").ValueOrDefault());
         }
 
-        [TestMethod]
+        [Test]
         public void Either_GetUnsafeValue()
         {
             var none = "a".None<string, string>("ex");

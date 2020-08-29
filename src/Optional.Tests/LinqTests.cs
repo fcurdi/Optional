@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Optional.Linq;
 
 namespace Optional.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class LinqTests
     {
-        [TestMethod]
+        [Test]
         public void Maybe_LinqTransformations()
         {
             var none = "a".None();
@@ -80,7 +80,7 @@ namespace Optional.Tests
             Assert.IsTrue(someA.HasValue);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_LinqTransformations()
         {
             var none = "a".None<string, string>("ex");

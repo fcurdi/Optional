@@ -1,6 +1,6 @@
 ﻿//#if !NOASYNC
 
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using NUnit.Framework;
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
@@ -10,10 +10,10 @@
 
 //namespace Optional.Tests.Extensions
 //{
-//    [TestClass]
+//    [TestFixture]
 //    public class AsyncOptionTests
 //    {
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncMaybe_Creation()
 //        {
 //            var some1 = new AsyncOption<string>(Task.FromResult(Option.Some<string>("abc")));
@@ -52,7 +52,7 @@
 //            Assert.IsFalse(await none3.HasValue);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncMaybe_RetrievalAndContainment()
 //        {
 //            var some = AsyncOption.Some("abc");
@@ -77,7 +77,7 @@
 //            Assert.AreEqual(await none.ValueOr(() => "0"), "0");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncMaybe_Matching()
 //        {
 //            var some = AsyncOption.Some<string>("abc");
@@ -107,7 +107,7 @@
 //            );
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncMaybe_Map()
 //        {
 //            var some = AsyncOption.Some("abc");
@@ -120,7 +120,7 @@
 //            Assert.AreEqual(await none.Map(val => Task.FromResult(val + "d")).ValueOr("0"), "0");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncMaybe_FlatMap()
 //        {
 //            var some = AsyncOption.Some("abc");
@@ -147,7 +147,7 @@
 //            Assert.AreEqual(await none.FlatMap(val => Task.FromResult(Option.None<string, string>("ex")).ToAsyncOption()).ValueOr("0"), "0");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncMaybe_FlatMapOption()
 //        {
 //            var some = AsyncOption.Some("abc");
@@ -164,7 +164,7 @@
 //            Assert.AreEqual(await none.FlatMap(val => Option.None<string, string>("ex")).ValueOr("0"), "0");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncMaybe_Filter()
 //        {
 //            var some = AsyncOption.Some("abc");
@@ -175,7 +175,7 @@
 //            Assert.IsFalse(await none.Filter(value => value.StartsWith("a")).HasValue);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncEither_Creation()
 //        {
 //            var some1 = new AsyncOption<string, string>(Task.FromResult(Option.Some<string, string>("abc")));
@@ -213,7 +213,7 @@
 //            Assert.IsFalse(await none3.HasValue);
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncEither_RetrievalAndContainment()
 //        {
 //            var some = AsyncOption.Some<string, string>("abc");
@@ -241,7 +241,7 @@
 //            Assert.AreEqual(await none.ValueOrException(), "ex");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncEither_Matching()
 //        {
 //            var some = AsyncOption.Some<string, string>("abc");
@@ -271,7 +271,7 @@
 //            );
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncEither_Map()
 //        {
 //            var some = AsyncOption.Some<string, string>("abc");
@@ -290,7 +290,7 @@
 //            Assert.AreEqual(await none.MapException(ex => Task.FromResult(ex + "d")).ValueOrException(), "exd");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncEither_FlatMap()
 //        {
 //            var some = AsyncOption.Some<string, string>("abc");
@@ -327,7 +327,7 @@
 //            Assert.AreEqual(await none.FlatMap(val => Task.FromResult(Option.None<string>()).ToAsyncOption(), () => "ex").ValueOrException(), "ex");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncEither_FlatMapOption()
 //        {
 //            var some = AsyncOption.Some<string, string>("abc");
@@ -349,7 +349,7 @@
 //            Assert.AreEqual(await none.FlatMap(val => Option.None<string>(), () => "ex").ValueOrException(), "ex");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncEither_Filter()
 //        {
 //            var some = AsyncOption.Some<string, string>("abc");
@@ -364,7 +364,7 @@
 //            Assert.AreEqual(await none.Filter(value => value.StartsWith("a"), () => "ex2").ValueOrException(), "ex");
 //        }
 
-//        [TestMethod]
+//        [Test]
 //        public async Task Extensions_AsyncMaybeEither_Conversions()
 //        {
 //            var someMaybe = AsyncOption.Some<string>("abc");

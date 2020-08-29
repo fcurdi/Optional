@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,10 +10,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Optional.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class EitherTests
     {
-        [TestMethod]
+        [Test]
         public void Either_CreateAndCheckExistence()
         {
             var noneStruct = Option.None<int, string>("ex");
@@ -37,7 +37,7 @@ namespace Optional.Tests
             Assert.IsTrue(someClassNull.HasValue);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_CheckContainment()
         {
             var noneStruct = Option.None<int, string>("ex");
@@ -83,7 +83,7 @@ namespace Optional.Tests
             Assert.IsFalse(someClassNull.Exists(val => val != null));
         }
 
-        [TestMethod]
+        [Test]
         public void Either_Equality()
         {
             // Basic equality
@@ -146,7 +146,7 @@ namespace Optional.Tests
             Assert.IsTrue(Option.Some<int, int>(22) != Option.Some<int, int>(21));
         }
 
-        [TestMethod]
+        [Test]
         public void Either_CompareTo()
         {
             void LessThan<TValue, TException>(Option<TValue, TException> lesser, Option<TValue, TException> greater)
@@ -221,10 +221,10 @@ namespace Optional.Tests
             var someNotComparable1 = Option.Some<Dictionary<string, string>, Dictionary<string, string>>(new Dictionary<string, string>());
             var someNotComparable2 = Option.Some<Dictionary<string, string>, Dictionary<string, string>>(new Dictionary<string, string>());
 
-            Assert.ThrowsException<ArgumentException>(() => someNotComparable1.CompareTo(someNotComparable2));
-            Assert.ThrowsException<ArgumentException>(() => someNotComparable2.CompareTo(someNotComparable1));
-            Assert.ThrowsException<ArgumentException>(() => noneNotComparable1.CompareTo(noneNotComparable2));
-            Assert.ThrowsException<ArgumentException>(() => noneNotComparable2.CompareTo(noneNotComparable1));
+            Assert.Throws<ArgumentException>(() => someNotComparable1.CompareTo(someNotComparable2));
+            Assert.Throws<ArgumentException>(() => someNotComparable2.CompareTo(someNotComparable1));
+            Assert.Throws<ArgumentException>(() => noneNotComparable1.CompareTo(noneNotComparable2));
+            Assert.Throws<ArgumentException>(() => noneNotComparable2.CompareTo(noneNotComparable1));
 
             LessThan(noneNotComparableNull, noneNotComparable1);
             LessThan(someNotComparableNull, someNotComparable1);
@@ -244,7 +244,7 @@ namespace Optional.Tests
             EqualTo(someNotComparable1, someNotComparable1);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_Hashing()
         {
             Assert.AreEqual(Option.None<string, string>("ex").GetHashCode(), Option.None<string, string>("ex").GetHashCode());
@@ -263,7 +263,7 @@ namespace Optional.Tests
             Assert.AreNotEqual(Option.Some<object, string>(null).GetHashCode(), Option.None<object, string>(null).GetHashCode());
         }
 
-        [TestMethod]
+        [Test]
         public void Either_StringRepresentation()
         {
             Assert.AreEqual(Option.None<int?, int?>(null).ToString(), "None(null)");
@@ -285,7 +285,7 @@ namespace Optional.Tests
             Assert.AreEqual(Option.None<DateTime, DateTime>(now).ToString(), "None(" + now.ToString() + ")");
         }
 
-        [TestMethod]
+        [Test]
         public void Either_GetValue()
         {
             var noneStruct = Option.None<int, string>("ex");
@@ -314,7 +314,7 @@ namespace Optional.Tests
             Assert.AreEqual(someClassNull.ValueOrException(), null);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_GetValueLazy()
         {
             var noneStruct = Option.None<int, string>("ex");
@@ -360,7 +360,7 @@ namespace Optional.Tests
             Assert.AreEqual(someClassNull.ValueOr(ex => { Assert.Fail(); return "-1"; }), null);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_AlternativeValue()
         {
             var noneStruct = Option.None<int, string>("ex");
@@ -384,7 +384,7 @@ namespace Optional.Tests
             Assert.AreEqual(someClass.ValueOr("-1"), "1");
         }
 
-        [TestMethod]
+        [Test]
         public void Either_AlternativeOption()
         {
             var noneStruct = Option.None<int, string>("ex");
@@ -418,7 +418,7 @@ namespace Optional.Tests
             Assert.AreEqual(someClass.ValueOr("-1"), "1");
         }
 
-        [TestMethod]
+        [Test]
         public void Either_AlternativeValueLazy()
         {
             var noneStruct = Option.None<int, string>("ex");
@@ -462,7 +462,7 @@ namespace Optional.Tests
             someClassEx.Or(() => { Assert.Fail(); return "-1"; });
         }
 
-        [TestMethod]
+        [Test]
         public void Either_AlternativeOptionLazy()
         {
             var noneStruct = Option.None<int, string>("ex");
@@ -527,7 +527,7 @@ namespace Optional.Tests
             someClassEx.Else(() => { Assert.Fail(); return "-1".Some<string, string>(); });
         }
 
-        [TestMethod]
+        [Test]
         public void Either_CreateExtensions()
         {
             var none = 1.None("ex");
@@ -551,21 +551,21 @@ namespace Optional.Tests
             var noneNullableNotNull = ((int?)null).SomeNotNull<int?, string>("ex");
             var someNullableNotNull = ((int?)1).SomeNotNull<int?, string>("ex");
 
-            Assert.IsInstanceOfType(noneNullableNotNull.ValueOr(-1), typeof(int?));
-            Assert.IsInstanceOfType(someNullableNotNull.ValueOr(-1), typeof(int?));
+            Assert.IsInstanceOf(typeof(int?), noneNullableNotNull.ValueOr(-1) );
+            Assert.IsInstanceOf(typeof(int?), someNullableNotNull.ValueOr(-1) );
             Assert.AreEqual(noneNullableNotNull.ValueOr(-1), -1);
             Assert.AreEqual(someNullableNotNull.ValueOr(-1), 1);
 
             var noneFromNullable = ((int?)null).ToOption<int, string>("ex");
             var someFromNullable = ((int?)1).ToOption<int, string>("ex");
 
-            Assert.IsInstanceOfType(noneFromNullable.ValueOr(-1), typeof(int));
-            Assert.IsInstanceOfType(someFromNullable.ValueOr(-1), typeof(int));
+            Assert.IsInstanceOf( typeof(int), noneFromNullable.ValueOr(-1));
+            Assert.IsInstanceOf( typeof(int), someFromNullable.ValueOr(-1));
             Assert.AreEqual(noneFromNullable.ValueOr(-1), -1);
             Assert.AreEqual(someFromNullable.ValueOr(-1), 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_CreateExtensionsLazy()
         {
             var noneIsTen = "1".SomeWhen<string, string>(x => x == "10", () => "ex");
@@ -595,7 +595,7 @@ namespace Optional.Tests
             Assert.AreEqual(some3.ValueOr(-1), 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_Matching()
         {
             var none = "val".None("ex");
@@ -639,7 +639,7 @@ namespace Optional.Tests
             Assert.IsTrue(hasMatched);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_Transformation()
         {
             var none = "val".None("ex");
@@ -676,7 +676,7 @@ namespace Optional.Tests
             Assert.AreEqual(someNullNotNull.Match(val => val, ex => ex), "ex1");
         }
 
-        [TestMethod]
+        [Test]
         public void Either_Flatten()
         {
             var noneNone = Option.None<Option<string, int>, int>(1);
@@ -696,7 +696,7 @@ namespace Optional.Tests
             Assert.AreEqual(someSome.Flatten().ValueOr("b"), "a");
         }
 
-        [TestMethod]
+        [Test]
         public void Either_Filtering()
         {
             var none = "val".None("ex");
@@ -754,7 +754,7 @@ namespace Optional.Tests
             Assert.AreEqual(none.NotNull("ex1").ValueOrException(), "ex");
         }
 
-        [TestMethod]
+        [Test]
         public void Either_Filtering_Lazy()
         {
             var none = "val".None("ex");
@@ -818,7 +818,7 @@ namespace Optional.Tests
             Assert.IsFalse(noneNotNull.HasValue);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_Filtering_ExceptionPropagation()
         {
             var none = "val".None("ex");
@@ -848,7 +848,7 @@ namespace Optional.Tests
             Assert.AreEqual(some2b.Match(val => val, ex => ex), "ex1");
         }
 
-        [TestMethod]
+        [Test]
         public void Either_ToEnumerable()
         {
             var none = "a".None("ex");
@@ -881,7 +881,7 @@ namespace Optional.Tests
             Assert.AreEqual(someAsEnumerable.Count(), 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Either_Enumerate()
         {
             var none = "a".None("ex");
@@ -908,7 +908,7 @@ namespace Optional.Tests
             Assert.AreEqual(count, 2);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_Default()
         {
             var none1 = default(Option<int, int>);
@@ -941,7 +941,7 @@ namespace Optional.Tests
         }
 
 #if !NETSTANDARD10
-        [TestMethod]
+        [Test]
         public void Either_Serialization()
         {
             var some = Option.Some<string, string>("1");

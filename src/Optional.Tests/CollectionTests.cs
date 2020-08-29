@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Optional.Collections;
 using System;
 using System.Collections;
@@ -7,10 +7,10 @@ using System.Linq;
 
 namespace Optional.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class CollectionTests
     {
-        [TestMethod]
+        [Test]
         public void Collections_Enumerable_ValuesMaybe()
         {
             var list1 = new List<Option<string>>
@@ -41,7 +41,7 @@ namespace Optional.Tests
             CollectionAssert.AreEqual(list4.Values().ToList(), list4Expected);
         }
 
-        [TestMethod]
+        [Test]
         public void Collections_Enumerable_ValuesEither()
         {
             var list1 = new List<Option<string, string>>
@@ -72,7 +72,7 @@ namespace Optional.Tests
             CollectionAssert.AreEqual(list4.Values().ToList(), list4Expected);
         }
 
-        [TestMethod]
+        [Test]
         public void Collections_Enumerable_ExceptionsEither()
         {
             var list1 = new List<Option<string, string>>
@@ -103,7 +103,7 @@ namespace Optional.Tests
             CollectionAssert.AreEqual(list4.Exceptions().ToList(), list4Expected);
         }
 
-        [TestMethod]
+        [Test]
         public void Collections_Enumerable_FirstOrNone()
         {
             var full = Enumerable.Range(0, 100);
@@ -127,7 +127,7 @@ namespace Optional.Tests
 #endif
         }
 
-        [TestMethod]
+        [Test]
         public void Collections_Enumerable_LastOrNone()
         {
             var full = Enumerable.Range(0, 100);
@@ -151,7 +151,7 @@ namespace Optional.Tests
 #endif
         }
 
-        [TestMethod]
+        [Test]
         public void Collections_Enumerable_SingleOrNone()
         {
             var full = Enumerable.Range(0, 100);
@@ -175,7 +175,7 @@ namespace Optional.Tests
 #endif
         }
 
-        [TestMethod]
+        [Test]
         public void Collections_Enumerable_ElementAtOrNone()
         {
             var full = Enumerable.Range(0, 100);
@@ -199,7 +199,7 @@ namespace Optional.Tests
 #endif
         }
 
-        [TestMethod]
+        [Test]
         public void Collections_Dictionary_GetValueOrNone()
         {
             var dictionaryA = Enumerable.Range(50, 50).ToDictionary(i => i, i => i.ToString());

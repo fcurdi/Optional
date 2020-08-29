@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Optional.Utilities;
 using Optional.Tests.Utilities;
 
@@ -12,10 +12,10 @@ using Ex6 = System.RankException;
 
 namespace Optional.Tests.Extensions
 {
-    [TestClass]
+    [TestFixture]
     public class SafeTests
     {
-        [TestMethod]
+        [Test]
         public void Extensions_Safe_CatchAll()
         {
             var ex1 = new Ex("ex");
@@ -27,8 +27,8 @@ namespace Optional.Tests.Extensions
             Assert.IsFalse(error1.HasValue);
             Assert.IsFalse(error2.HasValue);
 
-            Assert.IsInstanceOfType(error1.Match(x => null, ex => ex), typeof(Ex));
-            Assert.IsInstanceOfType(error2.Match(x => null, ex => ex), typeof(Ex1));
+            Assert.IsInstanceOf( typeof(Ex), error1.Match(x => null, ex => ex));
+            Assert.IsInstanceOf(typeof(Ex1),error2.Match(x => null, ex => ex));
 
             Assert.AreEqual(error1.Match(x => null, ex => ex), ex1);
             Assert.AreEqual(error2.Match(x => null, ex => ex), ex2);
@@ -37,7 +37,7 @@ namespace Optional.Tests.Extensions
             Assert.IsTrue(success.ValueOr(false));
         }
 
-        [TestMethod]
+        [Test]
         public void Extensions_Safe_Catch1()
         {
             var ex0 = new Ex("ex");
@@ -49,7 +49,7 @@ namespace Optional.Tests.Extensions
             var err1 = Safe.Try<bool, Ex1>(() => { throw ex1; });
 
             Assert.IsFalse(err1.HasValue);
-            Assert.IsInstanceOfType(err1.Match(x => null, ex => ex), typeof(Ex1));
+            Assert.IsInstanceOf(typeof(Ex1), err1.Match(x => null, ex => ex));
             Assert.AreEqual(err1.Match(x => null, ex => ex), ex1);
 
             CustomAssert.Throws<Ex>(() => Safe.Try<bool, Ex2>(() => { throw ex0; }));
@@ -63,7 +63,7 @@ namespace Optional.Tests.Extensions
             Assert.IsTrue(success.ValueOr(false));
         }
 
-        [TestMethod]
+        [Test]
         public void Extensions_Safe_Catch2()
         {
             var ex0 = new Ex("ex");
@@ -79,8 +79,8 @@ namespace Optional.Tests.Extensions
             Assert.IsFalse(err1.HasValue);
             Assert.IsFalse(err2.HasValue);
 
-            Assert.IsInstanceOfType(err1.Match(x => null, ex => ex), typeof(Ex1));
-            Assert.IsInstanceOfType(err2.Match(x => null, ex => ex), typeof(Ex2));
+            Assert.IsInstanceOf(typeof(Ex1), err1.Match(x => null, ex => ex));
+            Assert.IsInstanceOf(typeof(Ex2), err2.Match(x => null, ex => ex));
 
             Assert.AreEqual(err1.Match(x => null, ex => ex), ex1);
             Assert.AreEqual(err2.Match(x => null, ex => ex), ex2);
@@ -96,7 +96,7 @@ namespace Optional.Tests.Extensions
             Assert.IsTrue(success.ValueOr(false));
         }
 
-        [TestMethod]
+        [Test]
         public void Extensions_Safe_Catch3()
         {
             var ex0 = new Ex("ex");
@@ -115,9 +115,9 @@ namespace Optional.Tests.Extensions
             Assert.IsFalse(err2.HasValue);
             Assert.IsFalse(err3.HasValue);
 
-            Assert.IsInstanceOfType(err1.Match(x => null, ex => ex), typeof(Ex1));
-            Assert.IsInstanceOfType(err2.Match(x => null, ex => ex), typeof(Ex2));
-            Assert.IsInstanceOfType(err3.Match(x => null, ex => ex), typeof(Ex3));
+            Assert.IsInstanceOf( typeof(Ex1), err1.Match(x => null, ex => ex));
+            Assert.IsInstanceOf( typeof(Ex2), err2.Match(x => null, ex => ex));
+            Assert.IsInstanceOf( typeof(Ex3), err3.Match(x => null, ex => ex));
 
             Assert.AreEqual(err1.Match(x => null, ex => ex), ex1);
             Assert.AreEqual(err2.Match(x => null, ex => ex), ex2);
@@ -134,7 +134,7 @@ namespace Optional.Tests.Extensions
             Assert.IsTrue(success.ValueOr(false));
         }
 
-        [TestMethod]
+        [Test]
         public void Extensions_Safe_Catch4()
         {
             var ex0 = new Ex("ex");
@@ -156,10 +156,10 @@ namespace Optional.Tests.Extensions
             Assert.IsFalse(err3.HasValue);
             Assert.IsFalse(err4.HasValue);
 
-            Assert.IsInstanceOfType(err1.Match(x => null, ex => ex), typeof(Ex1));
-            Assert.IsInstanceOfType(err2.Match(x => null, ex => ex), typeof(Ex2));
-            Assert.IsInstanceOfType(err3.Match(x => null, ex => ex), typeof(Ex3));
-            Assert.IsInstanceOfType(err4.Match(x => null, ex => ex), typeof(Ex4));
+            Assert.IsInstanceOf( typeof(Ex1), err1.Match(x => null, ex => ex));
+            Assert.IsInstanceOf( typeof(Ex2), err2.Match(x => null, ex => ex));
+            Assert.IsInstanceOf( typeof(Ex3), err3.Match(x => null, ex => ex));
+            Assert.IsInstanceOf( typeof(Ex4), err4.Match(x => null, ex => ex));
 
             Assert.AreEqual(err1.Match(x => null, ex => ex), ex1);
             Assert.AreEqual(err2.Match(x => null, ex => ex), ex2);
@@ -177,7 +177,7 @@ namespace Optional.Tests.Extensions
             Assert.IsTrue(success.ValueOr(false));
         }
 
-        [TestMethod]
+        [Test]
         public void Extensions_Safe_Catch5()
         {
             var ex0 = new Ex("ex");
@@ -202,11 +202,11 @@ namespace Optional.Tests.Extensions
             Assert.IsFalse(err4.HasValue);
             Assert.IsFalse(err5.HasValue);
 
-            Assert.IsInstanceOfType(err1.Match(x => null, ex => ex), typeof(Ex1));
-            Assert.IsInstanceOfType(err2.Match(x => null, ex => ex), typeof(Ex2));
-            Assert.IsInstanceOfType(err3.Match(x => null, ex => ex), typeof(Ex3));
-            Assert.IsInstanceOfType(err4.Match(x => null, ex => ex), typeof(Ex4));
-            Assert.IsInstanceOfType(err5.Match(x => null, ex => ex), typeof(Ex5));
+            Assert.IsInstanceOf( typeof(Ex1), err1.Match(x => null, ex => ex));
+            Assert.IsInstanceOf( typeof(Ex2), err2.Match(x => null, ex => ex));
+            Assert.IsInstanceOf( typeof(Ex3), err3.Match(x => null, ex => ex));
+            Assert.IsInstanceOf( typeof(Ex4), err4.Match(x => null, ex => ex));
+            Assert.IsInstanceOf( typeof(Ex5), err5.Match(x => null, ex => ex));
 
             Assert.AreEqual(err1.Match(x => null, ex => ex), ex1);
             Assert.AreEqual(err2.Match(x => null, ex => ex), ex2);

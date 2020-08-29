@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -10,10 +10,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Optional.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MaybeTests
     {
-        [TestMethod]
+        [Test]
         public void Maybe_CreateAndCheckExistence()
         {
             var noneStruct = Option.None<int>();
@@ -37,7 +37,7 @@ namespace Optional.Tests
             Assert.IsTrue(someClassNull.HasValue);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_CheckContainment()
         {
             var noneStruct = Option.None<int>();
@@ -83,7 +83,7 @@ namespace Optional.Tests
             Assert.IsFalse(someClassNull.Exists(val => val != null));
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_Equality()
         {
             // Basic equality
@@ -134,7 +134,7 @@ namespace Optional.Tests
             Assert.IsTrue(Option.Some(22) != Option.Some(21));
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_CompareTo()
         {
             void LessThan<TValue>(Option<TValue> lesser, Option<TValue> greater)
@@ -189,8 +189,8 @@ namespace Optional.Tests
             var someNotComparable1 = Option.Some<Dictionary<string, string>>(new Dictionary<string, string>());
             var someNotComparable2 = Option.Some<Dictionary<string, string>>(new Dictionary<string, string>());
 
-            Assert.ThrowsException<ArgumentException>(() => someNotComparable1.CompareTo(someNotComparable2));
-            Assert.ThrowsException<ArgumentException>(() => someNotComparable2.CompareTo(someNotComparable1));
+            Assert.Throws<ArgumentException>(() => someNotComparable1.CompareTo(someNotComparable2));
+            Assert.Throws<ArgumentException>(() => someNotComparable2.CompareTo(someNotComparable1));
 
             LessThan(noneNotComparable, someNotComparable1);
             LessThan(noneNotComparable, someNotComparableNull);
@@ -201,7 +201,7 @@ namespace Optional.Tests
             EqualTo(someNotComparable1, someNotComparable1);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_Hashing()
         {
             Assert.AreEqual(Option.None<string>().GetHashCode(), Option.None<string>().GetHashCode());
@@ -217,7 +217,7 @@ namespace Optional.Tests
             Assert.AreNotEqual(Option.Some<object>(null).GetHashCode(), Option.None<object>().GetHashCode());
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_StringRepresentation()
         {
             Assert.AreEqual(Option.None<int>().ToString(), "None");
@@ -235,7 +235,7 @@ namespace Optional.Tests
             Assert.AreEqual(Option.Some<DateTime>(now).ToString(), "Some(" + now.ToString() + ")");
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_GetValue()
         {
             var noneStruct = Option.None<int>();
@@ -259,7 +259,7 @@ namespace Optional.Tests
             Assert.AreEqual(someClassNull.ValueOr("-1"), null);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_GetValueLazy()
         {
             var noneStruct = Option.None<int>();
@@ -289,7 +289,7 @@ namespace Optional.Tests
             Assert.AreEqual(someClassNull.ValueOr(() => { Assert.Fail(); return "-1"; }), null);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_AlternativeValue()
         {
             var noneStruct = Option.None<int>();
@@ -313,7 +313,7 @@ namespace Optional.Tests
             Assert.AreEqual(someClass.ValueOr("-1"), "1");
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_AlternativeOption()
         {
             var noneStruct = Option.None<int>();
@@ -345,7 +345,7 @@ namespace Optional.Tests
             Assert.AreEqual(someClass.ValueOr("-1"), "1");
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_AlternativeValueLazy()
         {
             var noneStruct = Option.None<int>();
@@ -373,7 +373,7 @@ namespace Optional.Tests
             someClass.Or(() => { Assert.Fail(); return "-1"; });
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_AlternativeOptionLazy()
         {
             var noneStruct = Option.None<int>();
@@ -409,7 +409,7 @@ namespace Optional.Tests
             someClass.Else(() => { Assert.Fail(); return Option.None<string>(); });
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_CreateExtensions()
         {
             var none = 1.None();
@@ -439,21 +439,21 @@ namespace Optional.Tests
             var noneNullableNotNull = ((int?)null).SomeNotNull();
             var someNullableNotNull = ((int?)1).SomeNotNull();
 
-            Assert.IsInstanceOfType(noneNullableNotNull.ValueOr(-1), typeof(int?));
-            Assert.IsInstanceOfType(someNullableNotNull.ValueOr(-1), typeof(int?));
+            Assert.IsInstanceOf(typeof(int?), noneNullableNotNull.ValueOr(-1));
+            Assert.IsInstanceOf( typeof(int?), someNullableNotNull.ValueOr(-1));
             Assert.AreEqual(noneNullableNotNull.ValueOr(-1), -1);
             Assert.AreEqual(someNullableNotNull.ValueOr(-1), 1);
 
             var noneFromNullable = ((int?)null).ToOption();
             var someFromNullable = ((int?)1).ToOption();
 
-            Assert.IsInstanceOfType(noneFromNullable.ValueOr(-1), typeof(int));
-            Assert.IsInstanceOfType(someFromNullable.ValueOr(-1), typeof(int));
+            Assert.IsInstanceOf(typeof(int), noneFromNullable.ValueOr(-1));
+            Assert.IsInstanceOf(typeof(int), someFromNullable.ValueOr(-1));
             Assert.AreEqual(noneFromNullable.ValueOr(-1), -1);
             Assert.AreEqual(someFromNullable.ValueOr(-1), 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_Matching()
         {
             var none = 1.None();
@@ -497,7 +497,7 @@ namespace Optional.Tests
             Assert.IsTrue(hasMatched);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_Transformation()
         {
             var none = "a".None();
@@ -525,7 +525,7 @@ namespace Optional.Tests
             Assert.IsFalse(someNullNotNull.HasValue);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_Flatten()
         {
             var noneNone = Option.None<Option<string>>();
@@ -543,7 +543,7 @@ namespace Optional.Tests
             Assert.AreEqual(someSome.Flatten().ValueOr("b"), "a");
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_Filtering()
         {
             var none = "a".None();
@@ -588,7 +588,7 @@ namespace Optional.Tests
             Assert.IsFalse(none.NotNull().HasValue);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_ToEnumerable()
         {
             var none = "a".None();
@@ -621,7 +621,7 @@ namespace Optional.Tests
             Assert.AreEqual(someAsEnumerable.Count(), 1);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_Enumerate()
         {
             var none = "a".None();
@@ -648,7 +648,7 @@ namespace Optional.Tests
             Assert.AreEqual(count, 2);
         }
 
-        [TestMethod]
+        [Test]
         public void Maybe_Default()
         {
             var none1 = default(Option<int>);
@@ -669,7 +669,7 @@ namespace Optional.Tests
         }
 
 #if !NETSTANDARD10
-        [TestMethod]
+        [Test]
         public void Maybe_Serialization()
         {
             var some = Option.Some("1");
